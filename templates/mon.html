@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+
+</head>
+<body>
+    <div id="line" style="width:1000px; height:600px;"></div>‘
+    <div id="bar" style="width:1000px; height:600px;background-color:rgb(0, 238, 255);"></div>
+    <script>
+        var chart = echarts.init(document.getElementById('line'), 'white', {renderer: 'canvas'});
+        var chart1 = echarts.init(document.getElementById('bar'), 'gray', {renderer: 'canvas'});
+        var old_data = [];
+        var old_data1 = [];
+        var old_data11 = [];
+        var old_x = [];
+        $(
+            function () {
+                fetchData(chart);
+
+                setInterval(getDynamicData, 2000);
+                //fetchData1(chart1);
+                //setInterval(getDynamicData1, 1000);
+            }
+        );
+
+        function fetchData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/lineChart",
+                dataType: "json",
+                success: function (result) {
+                    chart.setOption(result);
+                    old_data = chart.getOption().series[0].data;
+                }
+            });
+        }
+
+        function getDynamicData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/lineDynamicData",
+                dataType: "json",
+                success: function (result) {
+                    old_data.push([result.name, result.value]);
+                    chart.setOption({
+                        series: [{data: old_data}]
+                    });
+                }
+            });
+        }
+
+        // function fetchData1() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "http://127.0.0.1:5000/barChart",
+        //         dataType: "json",
+        //         success: function (result1) {
+        //             chart1.setOption(result1);
+        //             old_data1 = chart1.getOption().series[0].data;
+        //             old_data11 = chart1.getOption().series[1].data;
+        //             old_x = chart1.getOption().xAxis[0].data;
+        //         }
+        //     });
+        // }
+
+        // function getDynamicData1() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "http://127.0.0.1:5000/barDynamicData",
+        //         dataType: "json",
+        //         success: function (result1) {
+        //             old_data1.push(result1.value);
+        //             old_data11.push(result1.value+1);
+        //             //old_data11 = [11,12,13,14]
+        //             //alert(old_data11);
+
+        //             old_x.push([result1.name])
+        //             chart1.setOption({
+        //                 series: [{name:'A',data: old_data1},{name:'B',data: old_data11}],
+        //                 xAxis: [{data: old_x}]
+        //             });
+        //         }
+        //     });
+        // }
+    </script>
+</body>
+</html>
