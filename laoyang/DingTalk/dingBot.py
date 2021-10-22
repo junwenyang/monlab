@@ -77,7 +77,7 @@ class DingDing():
 
 
 if __name__ == "__main__":
-    dd = DingDing(webhook='https://oapi.dingtalk.com/robot/send?access_token=952659e4eab5b87e89d161d6d380325d1218b2d30069723ec6107dcc521e9162')
+    dd = DingDing(webhook='https://oapi.dingtalk.com/robot/send?access_token=')
     print(sys.argv[0]) 
     # 发送文本消息
     #print(dd.Send_Text_Msg(Content='test:测试数据'))
